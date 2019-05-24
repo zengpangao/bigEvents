@@ -9,13 +9,14 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
 </head>
 
 <body>
     <div class="main_wrap">
         <div class="header">
             <a href="#" class="logo"><img src="images/logo.png" alt=""></a>
-            <div class="copyright">CopyRight © 2019 深圳百秀信息技术股份有限公司<br>All Rights Reserved</div>
+            <div class="copyright">大事件-后台登录页<br>All Rights Reserved</div>
         </div>
 
         <div class="login_form_con">
@@ -29,8 +30,102 @@
             </form>
         </div>
 
-    </div> 
+    </div>
 
+    <!-- 模态框 -->
+    <div class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title">提示信息</h4>
+                </div>
+                <div class="modal-body">
+                  <p>账号密码错误</p>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <!-- /.modal -->
+
+
+
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+
+    <script>
+        // 用户登录
+        $(function(){
+            // 阻止表单的默认行为
+            $('.login_form').submit(function(e){
+                e.preventDefault()
+            })
+            $('.input_sub').click(function(){
+                $('.modal-body p').text('登录中,请稍等') 
+                        $('.modal').modal()
+                //  trim() 去除空格
+                var user_name = $('.input_txt').val().trim()
+                var password = $('.input_pass').val().trim()
+                if(user_name == "" || password == ""){
+                    $('.modal-body p').text('用户名,密码不能为空')
+                    // 弹框
+                    $('.modal').modal()
+                    return
+                }
+                $.ajax({
+                    url:'https://autumnfish.cn/big/admin/login',
+                    type:'post',
+                    data:{
+                        user_name: user_name,
+                        password: password
+                    },
+                    success:function(backData){
+                        // console.log(backData)
+                        if(backData.code==200){
+                            setTimeout(function(){
+                                $('.modal-body p').text('登录成功')
+                            $('.modal').modal()
+                             },500)
+                            setTimeout(function(){
+                                window.location.href="./index.html"
+                            },800)
+                        }else if(backData.code==400){
+                            // 登录失败
+                            setTimeout(function(){
+                                $('.modal-body p').text('用户名,密码输入错误') 
+                            // 弹框
+                            $('.modal').modal()
+                            },500)
+                        }       
+                    }
+                })
+            })
+        })
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </script>
 </body>
 
 </html>

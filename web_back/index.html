@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -52,7 +53,36 @@
         <iframe src="main_count.html" frameborder="0" id="main_frame" name="main_frame" frameborder="0" scrolling="auto"></iframe>
     </div>
 
-
+    <!-- 提示框 -->
+    <div class="modal fade modal-logout" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title">提示</h4>
+                </div>
+                <div class="modal-body">
+                  <p>你确定要退出</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">
+                    取消
+                  </button>
+                  <button type="button" class="btn btn-primary btn-logout">确认</button>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <!-- /.modal -->
 
     <script>
         var $level01 = $('.level01');
@@ -103,6 +133,29 @@
         }
 
     </script>
+
+<script>
+    $(function(){
+        $('.icon-tuichu').click(function(){
+            // 弹出框
+            $('.modal-logout').modal()
+        })
+        // 找到确认按钮,点击退出
+        $('.btn-logout').click(function(){
+            $.ajax({
+                url:'https://autumnfish.cn/big/admin/logout',
+                type:'post',
+                success:function(backData){
+                    // console.log(backData);
+                    if(backData.code==200){
+                        window.location.href='./login.html'
+                    }           
+                }
+            })
+        })
+    })
+
+</script>
 
 </body>
 </html>

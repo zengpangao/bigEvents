@@ -153,6 +153,19 @@
                 }
             })
         })
+        $.ajax({
+          url: 'https://autumnfish.cn/big/admin/getuser',
+          type: 'get',
+          success: function(backData) {
+            // console.log(backData);
+            // 修改显示的内容 图片
+            $('.user_info img').attr('src', backData.data.user_pic)
+            $('.user_center_link img').attr('src', backData.data.user_pic)
+            // 名字 原始内容 需要保留 所有选择拼接字符串
+            // 为了精确命中可以人为添加标签
+            $('.user_info span i').html(backData.data.nickname)
+          }
+        })
     })
     
 

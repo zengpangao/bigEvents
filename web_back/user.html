@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
     <script src="js/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
 
 </head>
 
@@ -24,37 +25,36 @@
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">用户名称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control nickname" value="李思思">
+                        <input type="text" class="form-control username" value="李思思" name="username" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">昵称：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control username" value="思思">
+                        <input type="text" class="form-control nickname" value="思思" name="nickname" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label ">邮箱：</label>
+                    <label for="inputEmail3" class="col-sm-2 control-label">邮箱：</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control email" value="lisisi@126.com">
+                        <input type="text" class="form-control email" value="lisisi@126.com" name="email" />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">用户图标：</label>
                     <div class="col-sm-10">
-                        <img src="images/2.jpg" alt="" class="user_picc">
-                        <input type="file" id="exampleInputFile">
+                        <img src="images/2.jpg" alt="" class="user_pic" />
+                        <input type="file" id="exampleInputFile" name="user_pic" />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label for="inputEmail3" class="col-sm-2 control-label">密码：</label>
                     <div class="col-sm-4">
-                        <input type="password" class="form-control password" id="inputEmail3" value="12345678">
+                        <input type="password" class="form-control password" value="12345678" name="password" />
                     </div>
                 </div>
-
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -65,18 +65,79 @@
         </div>
     </div>
 
+    <!-- modal框 -->
+    <div class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title">提示信息!!!</h4>
+            </div>
+            <div class="modal-body">
+              <p>恭喜你，修改成功了哦&hellip;</p>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+
     <script>
         $(function () {
             $.ajax({
                 url: 'https://autumnfish.cn/big/admin/userinfo_get',
                 type: 'get',
-                success:function(backData){
-                    console.log(backData);
-                    for(var key in backData.data){
+                success: function (backData) {
+                    // console.log(backData)
+                    for (var key in backData.data) {
                         $('input.' + key + '').val(backData.data[key])
                     }
-                    
+                    // 单独的设置图片
+                    $('.user_pic').attr('src', backData.data.user_pic)
                 }
+            })
+            // change事件 绑定
+            $('#exampleInputFile').change(function (e) {
+                // 获取 选中的那个文件
+                // console.log(this.files[0])
+                // 方法的作用是 把一个文件变成url地址
+                var url = URL.createObjectURL(this.files[0])
+                // 设置url地址 给img标签
+                $(this)
+                    .prev('img')
+                    .attr('src', url)
+            })
+            $('.btn-success').click(function (e) {
+                e.preventDefault()
+                // 获取数据
+                var formData = new FormData($('.article_form')[0])
+                // ajax
+                $.ajax({
+                    url: 'https://autumnfish.cn/big/admin/userinfo_edit',
+                    type: 'post',
+                    data: formData,
+                    contentType: false, // 不设置请求头 用默认值
+                    processData: false, // 不把数据变为 key=value&key2=value2
+                    success: function(backData) {
+                        // console.log(backData)
+                        if(backData.code==200){
+                            $('.modal').modal()
+                            setTimeout(function(){
+                                // window.location.reload()
+                                window.location.href='./index.html'
+                            },1000)
+                        }
+
+                    }
+
+                })
             })
 
         })

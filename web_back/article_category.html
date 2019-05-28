@@ -219,6 +219,8 @@
                 $('.modal-title').text('新增分类')
                 // 按钮
                 $('#model_add').text('新增').removeClass('btn-success')
+                // 清空Input框里的内容
+                $('form input').val('')
             })
             // 弹出编辑框  委托事件
             $('.category_table').on('click', 'a.btn-info', function () {

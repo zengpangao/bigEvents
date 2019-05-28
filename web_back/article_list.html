@@ -25,11 +25,8 @@
           <div class="col-xs-6">
             <form class="form-inline">
               <select id="selCategory" name="" class="form-control input-sm">
-                <option>所有分类</option>
-                <option>未分类</option>
-                <option>奇趣事</option>
-                <option>会生活</option>
-                <option>爱旅行</option>
+                <option value="">所有分类</option>
+                
               </select>
               <select id="selStatus" name="" class="form-control input-sm">
                 <option value="">所有状态</option>
@@ -302,7 +299,7 @@
     </script>
     <!-- 导入模板引擎 -->
     <script src="./js/template-web.js"></script>
-    <!-- 定义模板 -->
+    <!-- 定义模板 tr -->
     <script id="article" type="text/html">
       {{each data}}
           <tr>
@@ -318,6 +315,12 @@
               </tr>
       {{/each}}
     </script>
+    <!-- 定义模板 -->
+    <script type="text/html" id="type">
+      {{each data}}
+      <option value="{{$value.id}}">{{$value.name}}</option>
+      {{/each}}
+    </script>
 
     <script>
         $(function () {
@@ -329,10 +332,11 @@
                 data: {
                     perpage: 12,
                     page: mypage,
-                    state:$('#selStatus').val()
+                    state:$('#selStatus').val(),
+                    type: $('#selCategory').val()
                 },
                 success: function (backData) {
-                    console.log(backData);
+                    // console.log(backData);
                     $('tbody').html(template('article', backData))
 
                 }
@@ -362,6 +366,14 @@
             $('#btnSearch').click(function(e){
               e.preventDefault()
               getData()
+            })
+            $.ajax({
+              url:'http://localhost:8000/admin/category_search',
+              type:'get',
+              success:function(backData){
+                // console.log(backData);
+                $('#selCategory').append(template('type',backData))
+              }
             })
         })
 

@@ -327,8 +327,9 @@
                 url: 'http://localhost:8000/admin/search',
                 get: 'get',
                 data: {
-                    perpage: 6,
-                    page: mypage
+                    perpage: 12,
+                    page: mypage,
+                    state:$('#selStatus').val()
                 },
                 success: function (backData) {
                     console.log(backData);
@@ -357,6 +358,11 @@
             $pagination.twbsPagination(defaultOpts)
             //-----------------------------------------     
             getData()
+            // 点击筛选 获取数据
+            $('#btnSearch').click(function(e){
+              e.preventDefault()
+              getData()
+            })
         })
 
 

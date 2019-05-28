@@ -274,6 +274,45 @@
             window.parent.setMenu(1,1);
         })
     </script>
+    <script src="./js/template-web.js"></script>
+    <script type="text/html" id="article">
+        {{each data}}
+        <tr>                   
+                <td>{{$value.title}}</td>
+                <td>{{$value.author}}</td>
+                <td>{{$value.type}}</td>
+                <td class="text-center">{{$value.date}}</td>
+                <td class="text-center">{{$value.state}}</td>
+                <td class="text-center">
+                    <a href="post-edit.html?id=996" class="btn btn-default btn-xs">编辑</a>
+                    <a href="javascript:deleteTr( 996 );" class="btn btn-danger btn-xs">删除</a>
+                </td>
+            </tr>
+            {{/each}}
+    </script>
+
+    <script>
+        $(function(){
+            $.ajax({
+            url:'http://localhost:8000/admin/search',
+            get:'get',
+            data:{
+                perpage:6,
+                page:1
+            },
+            success:function(backData){
+                console.log(backData);
+                $('tbody').html(template('article',backData))
+                
+            }
+        })
+        })
+    
+    
+    
+    
+    
+    </script>
 
 </body>
 
